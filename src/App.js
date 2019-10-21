@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Grommet, Heading, TextInput } from 'grommet';
+import React, { useState, useEffect, Fragment } from 'react';
+import { Box, Button, Grommet, Heading, TextInput } from 'grommet';
+import { Search } from 'grommet-icons';
 
 const theme = {
   global: {
@@ -29,13 +30,23 @@ const AppBar = (props) => (
 );
 
 const SearchField = (props) => {
-  const { value, onChange } = props
+  const { value, onChange, onSearchClick } = props
   return (
-    <TextInput
-      placeholder="search something"
-      value={value}
-      onChange={event => onChange(event.target.value)}
-    />
+    <Fragment>
+      <TextInput
+        placeholder="looking for.."
+        value={value}
+        onChange={event => onChange(event.target.value)}
+      />
+      <Button
+        icon={<Search />}
+        label="Search!"
+        fill="horizontal"
+        margin="small"
+        primary
+        onClick={() => onSearchClick()}
+      />
+    </Fragment>
   );
 }
 
@@ -57,7 +68,10 @@ function App() {
               justify='top'
               pad='small'
             >
-            <SearchField value={query} onChange={(text) => { setQuery(text) }} />
+            <SearchField 
+              value={query} 
+              onChange={(text) => { setQuery(text) }}
+              onSearchClick={() => { alert(`Search.. ${query}`) }} />
           </Box>
           <Box flex align='center' justify='center'>
             Main body
