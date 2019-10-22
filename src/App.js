@@ -15,6 +15,12 @@ const theme = {
   },
 };
 
+const url = {
+  google: 'https://www.google.com/search?q=',
+  duck2go: 'https://www.duckduckgo.com/?q=',
+  bing: 'https://www.bing.com/search?q='
+}
+
 const AppBar = (props) => (
   <Box
     tag='header'
@@ -64,7 +70,6 @@ const SearchEngineList = (props) => {
           key={i}
           checked={value.has(item.value)}
           label={item.label}
-          disabled={item.value !== 'google'}
           onChange={() => {onChange(item.value)}}
         />)
       }
@@ -113,6 +118,15 @@ class App extends React.Component {
     })
   }
 
+  handleSearchClick = () => {
+    const { query, searchEngine } = this.state
+    const arrSearchEngine = Array.from(searchEngine)
+    arrSearchEngine.forEach((v) => {
+      window.open(`${url[v]}${query}`, v, 'menubar=false,toolbar=false')
+    })
+
+  }
+
   render () {
     const { query, searchEngine } = this.state
     const arrSearchEngine = Array.from(searchEngine)
@@ -134,7 +148,7 @@ class App extends React.Component {
               <SearchField 
                 value={query} 
                 onChange={(text) => { this.handleQueryChange(text) }}
-                onSearchClick={() => { alert(`Search.. ${query}`) }} 
+                onSearchClick={() => { this.handleSearchClick() }} 
               />
               <SearchEngineList 
                 list={searchEngineList}
@@ -152,7 +166,9 @@ class App extends React.Component {
                   {
                     arrSearchEngine.map((v, i) => {
                       return (
-                        <Box key={i} pad='xsmall' gridArea={v} background='light-5'>{ v }</Box>
+                        <Box key={i} pad='xsmall' flex align='center' justify='center' gridArea={v} background='light-5'>
+                          
+                        </Box>
                       )
                     })
                   }
