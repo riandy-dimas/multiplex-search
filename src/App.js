@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, CheckBox, Form, Grommet, Heading, TextInput } from 'grommet';
+import { Box, Button, CheckBox, Form, Grid, Grommet, Heading, TextInput } from 'grommet';
 import { Search } from 'grommet-icons';
 
 const theme = {
@@ -114,6 +114,7 @@ class App extends React.Component {
 
   render () {
     const { query, searchEngine } = this.state
+    const arrSearchEngine = Array.from(searchEngine)
     return (
       <Grommet theme={theme} full>
         <Box fill>
@@ -141,7 +142,20 @@ class App extends React.Component {
               />
             </Box>
             <Box flex align='center' justify='center'>
-              Main body
+              <Grid 
+                fill
+                rows={['full']}
+                columns={arrSearchEngine.map(() => 'auto')} 
+                areas={arrSearchEngine.map((v, i) => { return { name: v, start: [i, 0], end: [i, 0] } })}
+                gap='xsmall' >
+                  {
+                    arrSearchEngine.map((v, i) => {
+                      return (
+                        <Box key={i} pad='xsmall' gridArea={v} background='light-5'>{ v }</Box>
+                      )
+                    })
+                  }
+              </Grid>
             </Box>
           </Box>
         </Box>
