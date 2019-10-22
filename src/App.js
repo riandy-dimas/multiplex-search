@@ -64,6 +64,7 @@ const SearchEngineList = (props) => {
           key={i}
           checked={value.has(item.value)}
           label={item.label}
+          disabled={item.value !== 'google'}
           onChange={() => {onChange(item.value)}}
         />)
       }
