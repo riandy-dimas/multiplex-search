@@ -1,5 +1,5 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import { Box, Button, Grommet, Heading, TextInput } from 'grommet';
+import React, { Fragment } from 'react';
+import { Box, Button, CheckBox, Grommet, Heading, TextInput } from 'grommet';
 import { Search } from 'grommet-icons';
 
 const theme = {
@@ -33,11 +33,13 @@ const SearchField = (props) => {
   const { value, onChange, onSearchClick } = props
   return (
     <Fragment>
-      <TextInput
-        placeholder="looking for.."
-        value={value}
-        onChange={event => onChange(event.target.value)}
-      />
+      <Box background='light-1' round='small' gap='small'>
+        <TextInput
+          placeholder="looking for.."
+          value={value}
+          onChange={event => onChange(event.target.value)}
+        />
+      </Box>
       <Button
         icon={<Search />}
         label="Search!"
@@ -50,36 +52,100 @@ const SearchField = (props) => {
   );
 }
 
-function App() {
-  const [query, setQuery] = useState('');
-
+const SearchEngineList = (props) => {
+  const { list, onChange, value } = props
   return (
-    <Grommet theme={theme} full>
-      <Box fill>
-        <AppBar>
-          <Heading level='3' margin='none'>Multiplex Search</Heading>
-        </AppBar>
-        <Box direction='row' flex overflow={{ horizontal: 'hidden' }}>
-          <Box
-              width='small'
-              background='light-2'
-              elevation='small'
-              align='center'
-              justify='top'
-              pad='small'
-            >
-            <SearchField 
-              value={query} 
-              onChange={(text) => { setQuery(text) }}
-              onSearchClick={() => { alert(`Search.. ${query}`) }} />
-          </Box>
-          <Box flex align='center' justify='center'>
-            Main body
+    <Box margin={{ vertical: 'medium' }} background='light-1' round='small' elevation='xsmall' gap='small' pad='small'>
+      <Heading level={4} margin='small'>Search Engine</Heading>
+      {
+        list.map((item, i) => <CheckBox
+          key={i}
+          checked={value.has(item.value)}
+          label={item.label}
+          onChange={() => {onChange(item.value)}}
+        />)
+      }
+    </Box>
+  )
+}
+
+const searchEngineList = [
+  {
+    label: 'Google',
+    value: 'google'
+  },
+  {
+    label: 'Duck Duck Go',
+    value: 'duck2go'
+  },
+  {
+    label: 'Bing',
+    value: 'bing'
+  },
+]
+
+class App extends React.Component {
+
+  state = {
+    query: '',
+    searchEngine: new Set(['google'])
+  }
+
+  handleQueryChange = (text) => {
+    this.setState({
+      query: text
+    })
+  }
+
+  handleSearchEngineChange = (value) => {
+    const { searchEngine } = this.state
+    let usedSearchEngine = searchEngine
+    if (searchEngine.has(value)) {
+      usedSearchEngine.delete(value)
+    } else {
+      usedSearchEngine.add(value)
+    }
+    this.setState({
+      searchEngine: usedSearchEngine
+    })
+  }
+
+  render () {
+    const { query, searchEngine } = this.state
+    return (
+      <Grommet theme={theme} full>
+        <Box fill>
+          <AppBar>
+            <Heading level='3' margin='none'>Multiplex Search</Heading>
+          </AppBar>
+          <Box direction='row' flex overflow={{ horizontal: 'hidden' }}>
+            <Box
+                width='small'
+                background='light-2'
+                elevation='small'
+                align='center'
+                justify='start'
+                pad='small'
+              >
+              <SearchField 
+                value={query} 
+                onChange={(text) => { this.handleQueryChange(text) }}
+                onSearchClick={() => { alert(`Search.. ${query}`) }} 
+              />
+              <SearchEngineList 
+                list={searchEngineList}
+                value={searchEngine}
+                onChange={(value) => { this.handleSearchEngineChange(value) }}
+              />
+            </Box>
+            <Box flex align='center' justify='center'>
+              Main body
+            </Box>
           </Box>
         </Box>
-      </Box>
-    </Grommet>
-  );
+      </Grommet>
+    );
+  }
 }
 
 export default App;
