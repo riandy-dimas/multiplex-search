@@ -55,7 +55,7 @@ const SearchField = (props) => {
 const SearchEngineList = (props) => {
   const { list, onChange, value } = props
   return (
-    <Box margin={{ vertical: 'medium' }} background='light-1' round='small' elevation='xsmall' gap='small' pad='small'>
+    <Box margin={{ vertical: 'medium' }} pad={{ horizontal: 'small', bottom: 'small'}} background='light-1' round='small' elevation='xsmall' gap='xsmall'>
       <Heading level={4} margin='small'>Search Engine</Heading>
       {
         list.map((item, i) => <CheckBox
