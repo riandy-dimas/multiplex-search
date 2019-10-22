@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react';
-import { Box, Button, CheckBox, Grommet, Heading, TextInput } from 'grommet';
+import React from 'react';
+import { Box, Button, CheckBox, Form, Grommet, Heading, TextInput } from 'grommet';
 import { Search } from 'grommet-icons';
 
 const theme = {
@@ -32,11 +32,12 @@ const AppBar = (props) => (
 const SearchField = (props) => {
   const { value, onChange, onSearchClick } = props
   return (
-    <Fragment>
+    <Form>
       <Box background='light-1' round='small' gap='small'>
         <TextInput
           placeholder="looking for.."
           value={value}
+          name='search'
           onChange={event => onChange(event.target.value)}
         />
       </Box>
@@ -44,11 +45,12 @@ const SearchField = (props) => {
         icon={<Search />}
         label="Search!"
         fill="horizontal"
-        margin="small"
+        margin={{ top: 'small' }}
         primary
+        type='submit'
         onClick={() => onSearchClick()}
       />
-    </Fragment>
+    </Form>
   );
 }
 
